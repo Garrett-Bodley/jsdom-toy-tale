@@ -34,32 +34,41 @@ function createCard(toy){
   card.className = 'card';
   card.id = toy.id;
 
-  let elements = []
+  let elements = [];
 
   let cardName = document.createElement('h2');
   cardName.innerText = toy.name
-  cardName.id = toy.name + '-name'
+  cardName.id = toy.id + '-name'
   elements.push(cardName);
 
   let cardImg = document.createElement('img');
   cardImg.src = toy.image;
   cardImg.className = 'toy-avatar';
-  cardImg.id = toy.name + '-image'
+  cardImg.id = toy.id + '-image'
   elements.push(cardImg);
 
   let likes = document.createElement('p');
   likes.innerHTML = `${toy.likes} Likes`;
-  likes.id = toy.name + '-likes'
+  likes.id = toy.id + '-likes'
   elements.push(likes);
 
   let likeButton = document.createElement('button');
   likeButton.class = 'like-btn';
   likeButton.innerHTML = 'Like <3'
-  likeButton.id = toy.name + '-like-button'
+  likeButton.id = toy.id + '-like-button'
   likeButton.addEventListener('click', function(){
     likeToy(toy)
-  })
+  });
   elements.push(likeButton);
+
+  let editButton = document.createElement('button');
+  editButton.class = 'like-btn';
+  editButton.innerHTML = 'Edit';
+  editButton.id = `edit-button-${toy.id}`;
+  editButton.addEventListener('click', function(e){
+    editToy(e, toy);
+  });
+  elements.push(editButton);
 
   for (const element of elements){
     card.appendChild(element);
@@ -68,6 +77,14 @@ function createCard(toy){
   document.getElementById('toy-collection').appendChild(card);
 };
 
+
+function editToy(eventObject, jsonData){
+  let toyName = eventObject.target.parentElement.querySelector('h2');
+  toyName.innerHTML = `<input type="text" class="input-text" value="${jsonData.name}"></input>`;
+  let editButton = eventObject.target;
+  editButton.innerText = `Save`;
+  debugger;
+};
 
 
 function likeToy(toy){
@@ -95,7 +112,7 @@ function likeToy(toy){
 
 
 function rerenderCardLikes(json){
-  let likes = document.getElementById(json.name + '-likes');
+  let likes = document.getElementById(json.id + '-likes');
   likes.innerHTML = json.likes + ' Likes';
 };
 
